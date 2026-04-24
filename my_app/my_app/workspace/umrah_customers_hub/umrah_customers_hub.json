@@ -1,0 +1,35 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"umrHdr1\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>\u0639\u0645\u0644\u0627\u0621 \u0627\u0644\u0639\u0645\u0631\u0647</b></span>\",\"col\":12}},{\"id\":\"umrSc1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Umrah_Customer\",\"col\":12}}]",
+ "creation": "2026-04-24 12:00:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "users",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Umrah_Customers_Hub",
+ "links": [],
+ "modified": "2026-04-24 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "My App",
+ "name": "Umrah_Customers_Hub",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 24.0,
+ "shortcuts": [
+  {
+   "doc_view": "List",
+   "label": "Umrah_Customer",
+   "link_to": "Umrah_Customer",
+   "type": "DocType"
+  }
+ ],
+ "title": "Umrah_Customers_Hub"
+}

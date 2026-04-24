@@ -1,0 +1,5 @@
+[pre_model_sync]
+
+[post_model_sync]
+my_app.patches.v1_0.migrate_umrah_fields_from_customer
+my_app.patches.v1_0.remove_umrah_workspace_slug_conflict

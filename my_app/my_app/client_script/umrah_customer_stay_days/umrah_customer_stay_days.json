@@ -1,0 +1,14 @@
+{
+ "creation": "2026-04-25 01:45:00.000000",
+ "docstatus": 0,
+ "doctype": "Client Script",
+ "dt": "Umrah_Customer",
+ "enabled": 1,
+ "modified": "2026-04-25 01:45:00.000000",
+ "modified_by": "Administrator",
+ "module": "My App",
+ "name": "Umrah Customer Stay Days",
+ "owner": "Administrator",
+ "script": "function umrah_parse_int(value) {\n\tconst parsed = parseInt(value, 10);\n\treturn Number.isNaN(parsed) ? null : parsed;\n}\n\nfunction umrah_recalc_stay(frm) {\n\tconst entry = frm.doc.entry_date;\n\tconst raw = frm.doc.number_of_days_of_stay;\n\tif (!entry || raw === undefined || raw === null || raw === \"\") return;\n\n\tconst days = umrah_parse_int(raw);\n\tif (days === null) return;\n\n\tconst exit_str = frappe.datetime.add_days(entry, days);\n\tconst span = frappe.datetime.get_diff(exit_str, entry);\n\tfrm.set_value(\"exit_date\", exit_str);\n\tfrm.set_value(\"remaining_days_of_stay\", Math.max(span, 0));\n}\n\nfunction umrah_apply_kingdom_days(frm) {\n\tconst raw = frm.doc.stay_days_in_kingdom;\n\tif (raw === undefined || raw === null || raw === \"\") return;\n\n\tconst days = umrah_parse_int(raw);\n\tif (days === null) return;\n\n\tconst entry_date = frappe.datetime.add_days(frappe.datetime.get_today(), -days);\n\n\tfrm.set_value(\"entry_date\", entry_date).then(() => {\n\t\treturn frappe.db.get_single_value(\"omra_setting\", \"total_stay_period\");\n\t}).then((total_stay_period) => {\n\t\tconst total_days = umrah_parse_int(total_stay_period);\n\t\tif (total_days === null) {\n\t\t\tumrah_recalc_stay(frm);\n\t\t\treturn;\n\t\t}\n\t\treturn frm.set_value(\"number_of_days_of_stay\", total_days - days).then(() => umrah_recalc_stay(frm));\n\t});\n}\n\nfrappe.ui.form.on(\"Umrah_Customer\", {\n\trefresh(frm) {\n\t\tumrah_recalc_stay(frm);\n\t},\n\tentry_date(frm) {\n\t\tumrah_recalc_stay(frm);\n\t},\n\tnumber_of_days_of_stay(frm) {\n\t\tumrah_recalc_stay(frm);\n\t},\n\tstay_days_in_kingdom(frm) {\n\t\tumrah_apply_kingdom_days(frm);\n\t},\n});",
+ "view": "Form"
+}

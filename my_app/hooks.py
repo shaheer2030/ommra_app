@@ -11,7 +11,7 @@ fixtures = ["Custom Field"]
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/my_app/css/my_app.css"
-# app_include_js = "/assets/my_app/js/my_app.js"
+app_include_js = "/assets/my_app/js/umrah_sidebar_link.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/my_app/css/my_app.css"
@@ -28,7 +28,7 @@ fixtures = ["Custom Field"]
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {"Umrah_Customer": "public/js/umrah_customer.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -111,7 +111,6 @@ fixtures = ["Custom Field"]
 
 override_doctype_class = {
 	#"Sales Order": "my_app.overrides.sales_order.CustomSalesOrder"
-    "Customer": "my_app.overrides.customer.CustomCustomer"
 }
 
 # Document Events
@@ -130,17 +129,10 @@ override_doctype_class = {
 # ---------------
 
 scheduler_events = {
-    "cron": {
-        "0 */6 * * *": [
-          #  "my_app.overrides.customerstatus.update_remaining_days_for_all_customers"
-          "my_app.overrides.customer.update_remaining_days_for_all_customers"
-        ],
-        "*/45 * * * *": [
-          #  "my_app.overrides.customerstatus.update_remaining_days_for_all_customers"
-          "my_app.overrides.customer.alertemaining"
-        ]
-
-    }
+	"cron": {
+		"0 */6 * * *": ["my_app.umrah_tasks.update_remaining_days_for_all_umrah_customers"],
+		"*/45 * * * *": ["my_app.umrah_tasks.alert_remaining_umrah_stay"],
+	}
 }
 # scheduler_events = {
 # 	"all": [

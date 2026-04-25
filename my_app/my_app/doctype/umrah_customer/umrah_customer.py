@@ -20,6 +20,7 @@ class Umrah_Customer(Document):
 		self._apply_entry_date_from_kingdom_days()
 		self._apply_stay_days_from_kingdom_days()
 		self._apply_stay_calculations()
+		self._apply_days_since_entry()
 
 	def _apply_entry_date_from_kingdom_days(self):
 		if self.stay_days_in_kingdom in (None, ""):
@@ -47,3 +48,10 @@ class Umrah_Customer(Document):
 		exit_date = getdate(self.exit_date)
 		# عدد الأيام بين تاريخ الدخول وتاريخ الخروج
 		self.remaining_days_of_stay = max(date_diff(exit_date, entry_date), 0)
+
+	def _apply_days_since_entry(self):
+		if self.number_of_days_of_stay is None:
+			return
+		if self.is_new() or self.has_value_changed("number_of_days_of_stay") or self.days_since_entry in (None, ""):
+			self.days_since_entry = int(self.number_of_days_of_stay)
+			self.days_since_entry_updated_on = getdate()

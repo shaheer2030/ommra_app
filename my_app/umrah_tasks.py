@@ -6,17 +6,32 @@ def update_remaining_days_for_all_umrah_customers():
 	rows = frappe.get_all(
 		"Umrah_Customer",
 		filters={"entry_date": ["!=", None], "number_of_days_of_stay": ["!=", None]},
-		fields=["name", "entry_date", "number_of_days_of_stay"],
+		fields=[
+			"name",
+			"entry_date",
+			"number_of_days_of_stay",
+			"days_since_entry",
+			"days_since_entry_updated_on",
+		],
 	)
+	now = getdate()
 	for row in rows:
 		entry_date = getdate(row.entry_date)
 		days_stay = int(row.number_of_days_of_stay)
 		exit_date = add_days(entry_date, days_stay)
 		span_days = max(date_diff(getdate(exit_date), entry_date), 0)
+		current_days_since_entry = int(row.days_since_entry or row.number_of_days_of_stay)
+		last_updated = getdate(row.days_since_entry_updated_on) if row.days_since_entry_updated_on else now
+		days_to_add = max(date_diff(now, last_updated), 0)
 		frappe.db.set_value(
 			"Umrah_Customer",
 			row.name,
-			{"exit_date": exit_date, "remaining_days_of_stay": span_days},
+			{
+				"exit_date": exit_date,
+				"remaining_days_of_stay": span_days,
+				"days_since_entry": current_days_since_entry + days_to_add,
+				"days_since_entry_updated_on": now,
+			},
 			update_modified=False,
 		)
 	frappe.db.commit()

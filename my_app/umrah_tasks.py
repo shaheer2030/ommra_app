@@ -32,10 +32,10 @@ def update_remaining_days_for_all_umrah_customers():
 		days_to_add = max(date_diff(now, last_updated), 0)
 		days_since_entry = current_days_since_entry + days_to_add
 		span_days = max(total_stay_period - days_since_entry, 0)
-		frappe.publish_realtime(
-			event="msgprint",
-			message=f"قيمة span_days للعميل {row.name}: {span_days}",
-		)
+		#frappe.publish_realtime(
+		#	event="msgprint",
+		#	message=f"قيمة span_days للعميل {row.name}: {span_days}",
+		#)
 		frappe.db.set_value(
 			"Umrah_Customer",
 			row.name,

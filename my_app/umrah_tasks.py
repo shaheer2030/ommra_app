@@ -10,26 +10,39 @@ def update_remaining_days_for_all_umrah_customers():
 			"name",
 			"entry_date",
 			"number_of_days_of_stay",
+			"stay_days_in_kingdom",
 			"days_since_entry",
 			"days_since_entry_updated_on",
 		],
 	)
 	now = getdate()
+	total_stay_period = int(frappe.db.get_single_value("omra_setting", "total_stay_period") or 90)
 	for row in rows:
 		entry_date = getdate(row.entry_date)
 		days_stay = int(row.number_of_days_of_stay)
 		exit_date = add_days(entry_date, days_stay)
-		span_days = max(date_diff(getdate(exit_date), entry_date), 0)
-		current_days_since_entry = int(row.days_since_entry or row.number_of_days_of_stay)
+		#span_days = max(date_diff(getdate(exit_date), entry_date), 0)
+		
+		#frappe.publish_realtime(
+		#	event="msgprint",
+		#	message=f"قيمة span_days للعميل {row.name}: {span_days}",
+		#)
+		current_days_since_entry = int(row.days_since_entry or row.stay_days_in_kingdom)
 		last_updated = getdate(row.days_since_entry_updated_on) if row.days_since_entry_updated_on else now
 		days_to_add = max(date_diff(now, last_updated), 0)
+		days_since_entry = current_days_since_entry + days_to_add
+		span_days = max(total_stay_period - days_since_entry, 0)
+		frappe.publish_realtime(
+			event="msgprint",
+			message=f"قيمة span_days للعميل {row.name}: {span_days}",
+		)
 		frappe.db.set_value(
 			"Umrah_Customer",
 			row.name,
 			{
 				"exit_date": exit_date,
 				"remaining_days_of_stay": span_days,
-				"days_since_entry": current_days_since_entry + days_to_add,
+				"days_since_entry": days_since_entry,
 				"days_since_entry_updated_on": now,
 			},
 			update_modified=False,

@@ -1,6 +1,6 @@
 import frappe
 from frappe.model.document import Document
-from frappe.utils import add_days, date_diff, getdate
+from frappe.utils import add_days, getdate
 
 
 def _get_total_stay_period():
@@ -19,8 +19,8 @@ class Umrah_Customer(Document):
 	def before_save(self):
 		self._apply_entry_date_from_kingdom_days()
 		self._apply_stay_days_from_kingdom_days()
-		self._apply_stay_calculations()
 		self._apply_days_since_entry()
+		self._apply_stay_calculations()
 
 	def _apply_entry_date_from_kingdom_days(self):
 		if self.stay_days_in_kingdom in (None, ""):
@@ -45,13 +45,14 @@ class Umrah_Customer(Document):
 		days_stay = int(self.number_of_days_of_stay)
 		# تاريخ الخروج المتوقع: تاريخ الدخول + عدد أيام الإقامة
 		self.exit_date = add_days(entry_date, days_stay)
-		exit_date = getdate(self.exit_date)
-		# عدد الأيام بين تاريخ الدخول وتاريخ الخروج
-		self.remaining_days_of_stay = max(date_diff(exit_date, entry_date), 0)
+		total_stay_period = _get_total_stay_period()
+		if total_stay_period in (None, "") or self.days_since_entry in (None, ""):
+			return
+		self.remaining_days_of_stay = max(int(total_stay_period) - int(self.days_since_entry), 0)
 
 	def _apply_days_since_entry(self):
-		if self.number_of_days_of_stay is None:
+		if self.stay_days_in_kingdom in (None, ""):
 			return
-		if self.is_new() or self.has_value_changed("number_of_days_of_stay") or self.days_since_entry in (None, ""):
-			self.days_since_entry = int(self.number_of_days_of_stay)
+		if self.is_new() or self.has_value_changed("stay_days_in_kingdom") or self.days_since_entry in (None, ""):
+			self.days_since_entry = int(self.stay_days_in_kingdom)
 			self.days_since_entry_updated_on = getdate()

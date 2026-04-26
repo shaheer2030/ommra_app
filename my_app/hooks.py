@@ -130,8 +130,10 @@ override_doctype_class = {
 
 scheduler_events = {
 	"cron": {
-		"0 */6 * * *": ["my_app.umrah_tasks.update_remaining_days_for_all_umrah_customers"],
-		"*/45 * * * *": ["my_app.umrah_tasks.alert_remaining_umrah_stay"],
+		"* * * * *": [
+			"my_app.umrah_tasks.update_remaining_days_for_all_umrah_customers",
+			"my_app.umrah_tasks.alert_remaining_umrah_stay",
+		],
 	}
 }
 # scheduler_events = {

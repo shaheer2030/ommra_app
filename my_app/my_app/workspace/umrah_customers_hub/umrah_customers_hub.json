@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"umrHdr1\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>\u0639\u0645\u0644\u0627\u0621 \u0627\u0644\u0639\u0645\u0631\u0647</b></span>\",\"col\":12}},{\"id\":\"umrSc1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Umrah_Customer\",\"col\":12}}]",
+ "content": "[{\"id\":\"umrHdr1\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>\u0639\u0645\u0644\u0627\u0621 \u0627\u0644\u0639\u0645\u0631\u0647</b></span>\",\"col\":12}},{\"id\":\"umrSc1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Umrah_Customer\",\"col\":12}},{\"id\":\"umrSc2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"استيراد عملاء العمرة\",\"col\":12}}]",
  "creation": "2026-04-24 12:00:00.000000",
  "custom_blocks": [],
  "docstatus": 0,
@@ -29,6 +29,12 @@
    "label": "Umrah_Customer",
    "link_to": "Umrah_Customer",
    "type": "DocType"
+  },
+  {
+  "doc_view": "New",
+  "label": "استيراد عملاء العمرة",
+  "link_to": "Data Import",
+  "type": "DocType"
   }
  ],
  "title": "Umrah_Customers_Hub"

@@ -28,7 +28,10 @@ app_include_js = "/assets/my_app/js/umrah_sidebar_link.js"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-doctype_js = {"Umrah_Customer": "public/js/umrah_customer.js"}
+doctype_js = {
+	"Umrah_Customer": "public/js/umrah_customer.js",
+	"Data Import": "public/js/data_import_umrah.js",
+}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -130,8 +133,10 @@ override_doctype_class = {
 
 scheduler_events = {
 	"cron": {
-		"* * * * *": [
+		"*/30 * * * *": [
 			"my_app.umrah_tasks.update_remaining_days_for_all_umrah_customers",
+		],
+		"0 */12 * * *": [
 			"my_app.umrah_tasks.alert_remaining_umrah_stay",
 		],
 	}
